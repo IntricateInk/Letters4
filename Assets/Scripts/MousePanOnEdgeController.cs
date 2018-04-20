@@ -14,8 +14,23 @@ public class MousePanOnEdgeController : MonoBehaviour {
     [SerializeField]
     private Vector2 speed = new Vector2(10f, 10f);
 
-	// Update is called once per frame
-	void Update () {
+    private void Start()
+    {
+        RectTransform rT = this.GetComponent<RectTransform>();
+        float scaleY = Screen.height / rT.sizeDelta.y;
+
+        rT.sizeDelta *= scaleY; // new Vector2(rT.sizeDelta.x, scaleY * rT.sizeDelta.y);
+
+        foreach (RectTransform child in this.GetComponentsInChildren<RectTransform>())
+        {
+            if (rT == child) continue;
+            child.position  *= scaleY;
+            child.sizeDelta *= scaleY;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         Vector2 boundry = this.boundries;
 
